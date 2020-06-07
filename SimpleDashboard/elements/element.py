@@ -1,11 +1,16 @@
 import xml.etree.ElementTree as ET
+import copy
 
 class Element():
 
-    def __init__(self):
+    def __init__(self, tag, classes, *args, width='1-1', **kwargs):
         self.id = id(self)
+        self.tag = copy.copy(tag)
+        self.classes = copy.copy(classes)
+        self.classes.append('uk-width-'+width)
+        self.children = []
         self.et = ET
-        self.html = ''
+        self.html = self.et.Element(self.tag, attrib={'id': str(self.id), 'class': ' '.join(self.classes)})
         self.js = 'socket.on("'+str(self.id)+'_update", function(data){document.getElementById("'+str(self.id)+'").innerHTML=data});'
 
     def register(self, socketio):
@@ -23,11 +28,24 @@ class Element():
         self.html.text = text
         self.socketio.emit(str(self.id)+'_update', str(html))
 
+    def append_child(self, child):
+        self.children.append(child)
+        child.register(self.socketio)
+
     def get_html(self):
-        return self.et.tostring(self.html, encoding='utf8', method='html').decode('UTF-8')
+        et = self.html
+        for child in self.children:
+            et.append(child.html)
+        return self.et.tostring(et, encoding='utf8', method='html').decode('UTF-8')
 
     def get_element(self):
-        return self.html
+        et = copy.copy(self.html)
+        for child in self.children:
+            et.append(child.html)
+        return et
 
     def get_js(self):
-        return self.js
+        js = copy.copy(self.js)
+        for child in self.children:
+            js += child.get_js() + '\n'
+        return js

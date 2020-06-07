@@ -2,11 +2,8 @@ from .element import Element
 
 class Button(Element):
 
-    def __init__(self, text, callback):
-        super().__init__()
-        self.tag = 'button'
-        self.classes = ['uk-button', 'uk-button-default']
-        self.html = self.et.Element(self.tag, attrib={'id': str(self.id), 'class': ' '.join(self.classes)})
+    def __init__(self, text, callback, *args, tag='button', classes=['uk-button', 'uk-button-default'], **kwargs):
+        super().__init__(tag, classes, *args, **kwargs)
         self.html.text = text
         self.callback = callback
 

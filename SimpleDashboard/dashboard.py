@@ -25,7 +25,7 @@ class Dashboard():
         self.scripts.append(script)
 
     def generate_html(self):
-        et = ET.Element('div')
+        et = ET.Element('uk-grid',attrib={'class': 'uk-grid uk-child-width-expand@s uk-text-center'})
         for element in self.elements:
             et.append(element.get_element())
         return ET.tostring(et, encoding='utf8', method='html').decode('UTF-8')
