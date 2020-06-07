@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+import xml.etree.ElementTree as ET
 
 class Dashboard():
     def __init__(self):
@@ -7,11 +8,11 @@ class Dashboard():
         #app.config['SECRET_KEY'] = 'secret!'
         self.socketio = SocketIO(self.app)
         self.elements = []
-        self.scripts = []
-        self.scripts.append('https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js')
         @self.app.route('/')
-        def hello_world():
-            return render_template('main.html', content=self.generate_html())
+        def home():
+            return render_template('main.html',
+                                   content=self.generate_html(),
+                                   js=self.generate_js())
 
     def run(self):
         self.socketio.run(self.app)
@@ -24,17 +25,13 @@ class Dashboard():
         self.scripts.append(script)
 
     def generate_html(self):
-        html = ''
-        scripts = ['<script src="'+script+'"></script>' for script in self.scripts]
+        et = ET.Element('div')
         for element in self.elements:
-            html += element.get_html()
-        for script in scripts:
-            html += script
-        html += '<script>'
-        html += '(function() {'
-        html += 'var socket = io();'
+            et.append(element.get_element())
+        return ET.tostring(et, encoding='utf8', method='html').decode('UTF-8')
+
+    def generate_js(self):
+        js = ''
         for element in self.elements:
-            html += element.get_js() + '\n'
-        html += '})();'
-        html += '</script>'
-        return html
+            js += element.get_js() + '\n'
+        return js
