@@ -6,12 +6,7 @@ dashboard = Dashboard()
 def callback():
     print('Button pressed')
 
-def callback2():
-    print('Button2 pressed')
-
-for i in range(9):
-    def callback():
-        print('Button' + str(i) + 'pressed')
+for i in range(12):
     card = Card(width='1-3')
     dashboard.add_element(card)
     card_title = CardTitle('Title '+ str(i))

@@ -25,8 +25,9 @@ class Element():
         self.socketio.on_event(str(self.id)+'_'+str(event), callback)
 
     def update_inner_html(self, text):
-        self.html.text = text
-        self.socketio.emit(str(self.id)+'_update', str(html))
+        self.html.text = str(text)
+        self.socketio.emit(str(self.id)+'_update', str(text))
+        print(text)
 
     def append_child(self, child):
         self.children.append(child)
