@@ -2,6 +2,6 @@ from .element import Element
 
 class Paragraph(Element):
 
-    def __init__(self, text, *args, tag='p', classes=[], **kwargs):
+    def __init__(self, value, *args, tag='p', classes=[], **kwargs):
         super().__init__(tag, classes, *args, **kwargs)
-        self.html.text = str(text)
+        self.html.text = self._generate_inner_html(value)

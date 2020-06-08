@@ -4,3 +4,5 @@ from .paragraph import Paragraph
 from .card import Card
 from .header import Header
 from .card_title import CardTitle
+from .grid import Grid
+from.chart import Chart
