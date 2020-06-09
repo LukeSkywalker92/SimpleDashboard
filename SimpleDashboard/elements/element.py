@@ -36,6 +36,8 @@ class Element():
         self.socketio.on_event(str(self.id)+'_'+str(event), callback)
 
     def _generate_inner_html(self, value):
+        if isinstance(value, tuple):
+            value = value[0]
         if isinstance(value, str):
             return value
         elif isinstance(value, int) or isinstance(value, float):
@@ -50,7 +52,7 @@ class Element():
             return str(value)
 
 
-    def update(self, value):
+    def update(self, *value):
         inner_html = self._generate_inner_html(value)
         self.html.text = inner_html
         self.socketio.emit(str(self.id)+'_update', inner_html)

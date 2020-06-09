@@ -54,6 +54,8 @@ class Chart(Element):
     def update(self, x=[], y=[]):
         if isinstance(x, list) is False:
             x = [x]
+        if y == []:
+            y=x
         if isinstance(y, list) is False:
             y = [y]
         if self.persistent:
@@ -66,4 +68,5 @@ class Chart(Element):
     def clear(self):
         self.x = self.x_start
         self.y = []
+        self.__generate_js()
         self.socketio.emit(str(self.id)+'_clear')

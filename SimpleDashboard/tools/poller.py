@@ -2,16 +2,22 @@ import eventlet
 
 class Poller():
 
-    def __init__(self, function, element, interval=1):
+    def __init__(self, function, *elements, interval=1):
         self.function = function
-        self.element = element
+        self.elements = elements
         self.interval = interval
         self.active = False
         self.thread = None
 
     def poll(self):
         while True:
-            self.element.update(*(self.function()))
+            value = self.function()
+            if isinstance(value, tuple):
+                for element in self.elements:
+                    element.update(value)
+            else:
+                for element in self.elements:
+                    element.update(value)
             eventlet.sleep(self.interval)
 
     def start(self):

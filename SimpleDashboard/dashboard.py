@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 from .elements import Grid
 
 class Dashboard():
+    
     def __init__(self, title='SimpleDashboard', host='127.0.0.1', port=5000):
         self.app = Flask(__name__)
         #app.config['SECRET_KEY'] = 'secret!'
