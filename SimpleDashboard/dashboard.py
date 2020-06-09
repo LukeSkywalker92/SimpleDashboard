@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from .elements import Grid
 
 class Dashboard():
-    def __init__(self, title='SimpleDashboard'):
+    def __init__(self, title='SimpleDashboard', host='127.0.0.1', port=5000):
         self.app = Flask(__name__)
         #app.config['SECRET_KEY'] = 'secret!'
         self.socketio = SocketIO(self.app, async_mode='eventlet')
@@ -12,6 +12,8 @@ class Dashboard():
         self.grid.register(self.socketio)
         self.elements = []
         self.title=title
+        self.host = host
+        self.port = port
         @self.app.route('/')
         def home():
             return render_template('main.html',
@@ -21,7 +23,7 @@ class Dashboard():
 
     def run(self):
         self.grid.register(self.socketio)
-        self.socketio.run(self.app, '0.0.0.0')
+        self.socketio.run(self.app, self.host, self.port)
 
     def add_element(self, element):
         self.grid.append_child(element)
