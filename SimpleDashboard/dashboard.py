@@ -29,9 +29,6 @@ class Dashboard():
     def add_element(self, element):
         self.grid.append_child(element)
 
-    def add_script(self, script):
-        self.scripts.append(script)
-
     def generate_html(self):
         return self.grid.get_html()
 

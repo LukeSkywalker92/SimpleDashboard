@@ -1,0 +1,2 @@
+recursive-include SimpleDashboard/templates *
+recursive-include SimpleDashboard/static *
